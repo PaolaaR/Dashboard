@@ -1,0 +1,48 @@
+h1{
+    font-size: 40px;
+    font-weight: 600;
+    text-align: center;
+    margin: 40px 0;
+    padding: 20px;
+    color: #53391b;
+    text-decoration: solid underline #7e7f80;
+    text-decoration-thickness: 2px;
+}
+.logo{
+    width: 70px;
+    height: 70px;
+    border-radius: 20%;
+    margin: 0 auto;
+    padding: 5px;
+    display: block;
+}
+.container {
+	margin: 40px auto 100px auto;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 40px; 
+    }
+
+    @media screen and (max-width: 800px) {
+        #container {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    };
+
+    .container .movie {
+        text-align: center;
+        
+    }
+    
+    .container .movie .title {
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    .container .movie .poster {
+        width: 85%;
+        margin-bottom: 10px;
+        border-radius: 15px;
+        border: 10px dotted #7e7f80; 
+
+    }
