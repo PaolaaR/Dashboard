@@ -84,4 +84,43 @@ const ctx = document.getElementById('myChart');
 }   
 renderData();
 
+const loadMovies = async() => {
+	try {
+		const response = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=bf18d2cb4cf1bb2f31e5f038bd3612af&page=1`);
+
+		if(response.status === 200){
+			const datos = await response.json();
+    
+			
+			let movies = '';
+			datos.results.forEach(movie => {
+        if (movie.id !== 569094){
+				movies += `
+					<div class="movie">
+						<img class="poster" src="https://image.tmdb.org/t/p/w500/${movie.poster_path}">
+						<h3 class="title">${movie.title}</h3>
+            <p class="description">${movie.overview}</p>
+					</div>
+				`;
+      }
+			});
+
+			document.getElementById('container').innerHTML = movies;
+
+		} else if(response.status === 401){
+			console.log('Pusiste la llave mal');
+		} else if(response.status === 404){
+			console.log('La pelicula que buscas no existe');
+		} else {
+			console.log('Error');
+		}
+
+	} catch(error){
+		console.log(error);
+	}
+
+}
+
+loadMovies();
+
       
