@@ -3,22 +3,14 @@ import { fetchApi } from "./fetch.js";
 let popularidad=[];
 let nombre=[];
 
-const rgbaRedColor='rgba(255, 99, 132, 0.2)'
-const rgbRedColor='rgba(255, 99, 132)'
-
-const rgbaOrangeColor='rgba(255, 159, 64, 0.2)';
-const rgbOrangeColor='rgba(255, 159, 64)'
-
-
 
 async function renderData(){
 
   const movies = await fetchApi('https://api.themoviedb.org/3/movie/top_rated?api_key=bf18d2cb4cf1bb2f31e5f038bd3612af&page=1');
-console.log(movies);
 
-const moviesToRemove = 569094; // ID de la película que deseas eliminar
 
-// índice de la película que eliminar
+const moviesToRemove = 569094; // se decide eliminar Spider-Man: Across the Spider-Verse popularidad excede los parámetros del gráfico y es muy reciente
+
 const indexToRemove = movies.results.findIndex(movie => movie.id === moviesToRemove);
 
 if (indexToRemove !== -1) {
@@ -26,31 +18,13 @@ if (indexToRemove !== -1) {
   movies.results.splice(indexToRemove, 1);
 }
 
-// Manipulación de datos siguiente
+
 movies.results.forEach(movie => {
   popularidad.push(movie.popularity);
   nombre.push(movie.title);
 });
 
-console.log(popularidad);
-console.log(nombre);
 
-
-//     const movies=await fetchApi('https://api.themoviedb.org/3/movie/top_rated?api_key=bf18d2cb4cf1bb2f31e5f038bd3612af&page=1');
-//     console.log(movies);
-//     movies.results.forEach(movie=>{
-//         popularidad.push(movie.popularity);
-//         nombre.push(movie.title);
-//     });
-//     const elementToRemove = 12;
-// // Filtrar el arreglo para eliminar el elemento
-// const newArray = movies.results.filter(item => item !== elementToRemove);
-//     console.log(popularidad);
-//     console.log(nombre);
-
-const backgroundColors=popularidad.map(popularity=> popularity>3?rgbaRedColor:rgbaOrangeColor);
-const borderColors=popularidad.map(popularity=> popularity>3?rgbRedColor:rgbOrangeColor);
-console.log(backgroundColors);
 
 const ctx = document.getElementById('myChart');
 
@@ -61,9 +35,49 @@ const ctx = document.getElementById('myChart');
       datasets: [{
         label: 'Movies popularity',
         data: popularidad,
-        borderWidth: 1,
-        backgroundColor: backgroundColors,
-        borderColor: borderColors,
+        borderWidth: 3,
+        backgroundColor: [
+          'rgba(255, 26, 104, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 0, 8, 0.69)',
+          'rgba(0, 160, 98, 0.7)',
+          'rgba(153, 102, 270, 0.8)',
+          'rgba(55, 159, 64, 0.7)',
+          'rgba(0, 0, 0, 0.2)',
+          'rgba(255, 0, 255, 0.7)',
+          'rgba(255, 147, 67, 0.7)',
+          'rgba(0, 0, 0, 0.45)',
+          'rgba(141, 216, 160, 0.86)',
+          'rgba(153, 102, 265, 0.2)',
+          'rgba(239, 136, 142, 0.86)',
+          'rgba(0, 0, 0, 0.8)',
+          'rgba(255, 159, 74, 0.2)',
+          'rgba(157, 230, 74, 0.86)',
+          'rgba(126, 244, 240, 0.43)',
+          'rgba(78, 47, 74, 0.43)',
+          'rgba(255, 26, 26, 0.43)',
+        ],
+        borderColor: [
+          'rgba(255, 26, 104)',
+          'rgba(54, 162, 235)',
+          'rgba(255, 0, 8)',
+          'rgba(0, 160, 98)',
+          'rgba(153, 102, 270)',
+          'rgba(55, 159, 64)',
+          'rgba(0, 0, 0, 0.3)',
+          'rgba(255, 0, 255)',
+          'rgba(255, 147, 67)',
+          'rgba(0, 0, 0, 0.49)',
+          'rgba(141, 216, 160)',
+          'rgba(153, 102, 265)',
+          'rgba(239, 136, 142)',
+          'rgba(0, 0, 0)',
+          'rgba(255, 159, 74)',
+          'rgba(157, 230, 74)',
+          'rgba(126, 244, 240)',
+          'rgba(78, 47, 74)',
+          'rgba(255, 26, 26)',
+        ],
       }]
     },
     options: {
@@ -79,10 +93,44 @@ const ctx = document.getElementById('myChart');
         },
     }
     }
-
   });
 }   
 renderData();
+
+function applyPosterStyles() {
+  const posters = document.querySelectorAll('.container .movie .poster');
+  const backgroundColors = [
+    'rgba(255, 26, 104, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 0, 8, 0.69)',
+          'rgba(0, 160, 98, 0.7)',
+          'rgba(153, 102, 270, 0.8)',
+          'rgba(55, 159, 64, 0.7)',
+          'rgba(0, 0, 0, 0.2)',
+          'rgba(255, 0, 255, 0.7)',
+          'rgba(255, 147, 67, 0.7)',
+          'rgba(0, 0, 0, 0.45)',
+          'rgba(141, 216, 160, 0.86)',
+          'rgba(153, 102, 265, 0.2)',
+          'rgba(239, 136, 142, 0.86)',
+          'rgba(0, 0, 0, 0.8)',
+          'rgba(255, 159, 74, 0.2)',
+          'rgba(157, 230, 74, 0.86)',
+          'rgba(126, 244, 240, 0.43)',
+          'rgba(78, 47, 74, 0.43)',
+          'rgba(255, 26, 26, 0.43)',
+  ];
+
+  posters.forEach((poster, index) => {
+    poster.style.width = '90%';
+    poster.style.marginBottom = '8px';
+    poster.style.borderRadius = '12px';
+    poster.style.border = `17px dotted ${backgroundColors[index % backgroundColors.length]}`;
+    poster.style.backgroundColor = backgroundColors[index % backgroundColors.length];
+  });
+}
+
+// Poster de las películas y descripciones
 
 const loadMovies = async() => {
 	try {
@@ -90,8 +138,7 @@ const loadMovies = async() => {
 
 		if(response.status === 200){
 			const datos = await response.json();
-    
-			
+    	
 			let movies = '';
 			datos.results.forEach(movie => {
         if (movie.id !== 569094){
@@ -106,11 +153,12 @@ const loadMovies = async() => {
 			});
 
 			document.getElementById('container').innerHTML = movies;
-
+      
+      applyPosterStyles();
 		} else if(response.status === 401){
-			console.log('Pusiste la llave mal');
+			console.log('You are not authorized');
 		} else if(response.status === 404){
-			console.log('La pelicula que buscas no existe');
+			console.log('We could not find what you are looking for');
 		} else {
 			console.log('Error');
 		}
@@ -118,9 +166,11 @@ const loadMovies = async() => {
 	} catch(error){
 		console.log(error);
 	}
-
-}
+};
 
 loadMovies();
 
-      
+
+
+
+
